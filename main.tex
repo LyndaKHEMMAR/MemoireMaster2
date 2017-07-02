@@ -1,0 +1,786 @@
+\documentclass[a4paper,12pt]{report}
+
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{shorttoc}
+\usepackage{float}
+\usepackage{eurosym}
+
+\begin{document}
+
+
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\Large Université Paris Nanterre}\\[2.5cm] % Name of your university/college
+\textsc{\large Mémoire de M2 MIAGE, département Maths/Info \\ UFR SEGMI}\\[0.5cm] % Major heading such as course name
+%\textsc{\large Minor Heading}\\[0.5cm] % Minor heading such as course title
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{\Large \bfseries Optimisation de la valorisation des déchets grâce au Smart Waste Management}\\[0.4cm] % Title of your document
+\HRule \\[1.5cm]
+
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+\begin{center}
+\textsc{En vue de l'obtention du diplôme de MASTER 2 MIAGE \\en Agilité des systèmes d'information et e-business}\\[2.5cm]
+\end{center}
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft}
+\textbf{Soutenu le 05/07/17 \\par l'étudiante:}\\
+Lynda \textsc{KHEMMAR}\\[0.5cm] % Your name\\
+\textbf{Sous la direction de :}\\
+Lom Messan \textsc{HILLAH} % Your name
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright}
+\textbf{Devant le jury:} \\
+- Lom Messan \textsc{HILLAH (Encadrant)}\\ 
+- Pascal \textsc{POIZAT (Responsable de formation)}\\
+\end{flushright}
+\end{minipage}\\[2cm]
+
+% If you don't want a supervisor, uncomment the two lines below and remove the section above
+%\Large \emph{Author:}\\
+%John \textsc{Smith}\\[3cm] % Your name
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+%{\large M2 MIAGE 2016/2017}\\[0cm] % Date, change the \today to a set date if you want to be precise
+
+%----------------------------------------------------------------------------------------
+%	LOGO SECTION
+%----------------------------------------------------------------------------------------
+\begin {figure}[H]
+%\includegraphics [width =0.7\linewidth]{UPN.jpg}
+\hspace*{0mm}\vfill
+\begin{center} \includegraphics[scale=0.5 ]{UPN.jpg} \end{center}
+\vfill \hspace*{0mm}
+
+%\hfill 
+% \includegraphics [width =0.45\linewidth]{Paris-ouest-logo-2009.png}
+ \end{figure}
+ 
+%----------------------------------------------------------------------------------------
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+
+
+\chapter*{Remerciements}
+Je remercie en premier lieu mon encadrant à l'université Paris Nanterre : M. Lom Messan HILLAH, qui m'a beaucoup aidée, conseillée et motivée à travailler sur ce sujet jusqu'à la dernière minute.\\
+
+J'aimerais aussi remercier le directeur générale de Suez Recyclage et Valorisation, qui sans le savoir durant une réunion, a parlé des objectifs de l'entreprise de devenir digitale et innovante et reconnue par ses clients, et a utilisé l'expression "smart trucks". C'est comme cela que l'idée de travailler sur ce sujet est née.\\
+
+Je profite aussi pour saluer maman, papa, Kamy, Rabah, Yamina, Lila, qui n'ont jamais cessé de m'encourager, et je leurs suis très reconnaissante pour plein d'autres choses.
+
+
+\begin{abstract}
+La population mondiale ne cesse d'augmenter, tout comme la diversité des activités industrielles des villes, et les consommations des habitants, qui deviennent de plus importantes, et qui sont accompagnées par l'augmentation de la quantité générée de déchets.\\
+D'ici une dizaine d'année, la quantité de déchets générée devra augmenter de 50\%, ce qui impose la mobilisation d'un plus grand nombre de ressource humaine pour la collecte des déchets, et des coûts beaucoup plus importants qu'aujourd'hui.\\
+Il est important de trouver des solutions pour les villes de demain, afin de minimiser les coûts et d'optimiser la valorisation des déchets, tout en garantissant la sécurité des agents et l'efficacité des traitement. Ceci est l'objet du Smart Waste Management. \\[4.5cm]
+\paragraph*{mots clés :} Smart Waste Management - IOT, M2M, systèmes embarqués intelligence artificielle - traitement de données - smart trucks - capteurs - déchets.
+\end{abstract}
+
+\shorttableofcontents{Sommaire}{1}
+\chapter*{Introduction générale}
+La problématique de la gestion des déchets ne date pas d'aujourd'hui. Toutefois, les villes diversifient de plus en plus leurs activités, les habitants consomment de plus en plus de produits, et tout cela est accompagné d'une génération d'une quantité importante de déchets ménagers et industriels, qui ne césse d'augmenter.\\ La gestion des déchets devient de plus en plus complexe pour les opérateurs d'assainissement et les industries du recyclage, tant par la nécessité de mobiliser plus de ressource humaine et de planifier leurs activités, que par l'effort requis pour collecter les déchets à des fréquences qui dépendent souvent de la nature du déchet et ses qualifications, la zone où il se trouve, les événements spéciaux, ...etc.\\
+Il est primordial pour les sociétés de gestion de déchets de trouver des solutions pour minimiser les coûts de gestion et collecte de déchets, tout en garantissant une collecte efficace, une réduction de la quantité de carburant consommée pour se rendre sur les sites, en évitant tout débordement des conteneurs à déchets, en recyclant de plus grandes quantités d'objets, et en favorisant la sécurité des opérateurs de collecte et de recyclage, et la reconnaissance des clients.\\ 
+Pour atteindre ces objectifs, plusieurs entreprises et centres de recherche se sont engagés pour chercher et proposer des solutions intelligentes de gestion de déchets, en se basant sur l'Internet des objets, les systèmes embarqués, l'intelligence artificielle, et le traitement de données.\\
+L'objet de ce mémoire est de décrire quelques unes de ces solutions qui permettent une gestion intelligente des déchets (ou Smart Waste Management), et de proposer des perspectives d'évolution et de recherche dans ce domaine.\\ 
+Nous suivrons le plan suivant pour traiter notre sujet :\\
+\begin{itemize}
+\item Chapitre 1 : La gestion des déchets, une situation délicate.\\
+Nous étudierons ici le contexte, problématique, et les enjeux de la gestion actuelle des déchets.
+\item Chapitre 2 : Vers une optimisation de la valorisation des déchets grâce au Smart Waste Management.\\
+Ce chapitre sera notre état de l'art, nous parlerons notamment de quelques solutions mises en place par des entreprises, puis nous verrons la partie recherche dans un deuxième temps. 
+\item Chapitre 3 : Pour une meilleure gestion de déchets, innovons !\\
+Cette partie constitue notre contribution, elle contiendra un comparatif des solutions proposées par les entreprises dont on parlera dans l'état de l'art, les orientations actuelles en recherche, et les perspectives. 
+\item Nous terminerons par une conclusion.
+\end{itemize}
+
+\chapter{La gestion des déchets, une situation délicate}
+\section{Contexte}
+
+Les déchets générés dans les centres urbains sont l’une des causes de la pollution de l’environnement,  de certaines maladies en cas de décharge sauvage, et de problèmes socioéconomiques.\\
+La gestion des déchets est donc la seule façon d’éviter cela et d’améliorer nos conditions de vie, en collectant, traitant, puis recyclant ou éliminant le déchet.\\
+La gestion des déchets, se fait selon son type, il en existe plusieurs selon \cite{ref1}: 
+\begin{itemize}
+\item Déchets biodégradables : déchets organiques d’origine végétale ou animale, qui se décomposent plus ou moins rapidement grâce à d’autres organismes vivants. exemples : déchets de jardin, alimentaires.
+\item Déchets inertes : ne sont pas biodégradables et ne se dégradent pas, comme le béton, briques.
+\item Déchets recyclables comme le verre, papiers...
+\item Déchets ultimes : qui ne sont plus susceptibles d’être traités.
+\item Déchets dangereux : présentent des caractéristiques comme nocif, explosif, …
+\item DTQD (Déchets Toxiques en Quantités Dispersées) : par exemple les piles, résidus de peinture.
+\item DIS (Déchets Industriels Spéciaux) : comme les hydrocarbures, acides.
+\item DEEE (Déchets d’Equipements Electriques et Electroniques) : comme les ordinateurs, appareils électroménagers.
+\item DMS (Déchets Ménagers Spéciaux) : comme les médicaments : Cyclamed, huiles usagées : PEEFV.
+\end{itemize}
+
+
+
+
+
+
+
+\section{Problématique}
+
+
+Selon le SmartCitiesCouncil \footnote{Coalition industrielle formée pour accélérer le passage à des villes intelligentes et durables}, le volume des déchets devrait considérablement augmenter de près de 50 \% dans la prochaine décennie. Les solutions traditionnelles utilisées comme la collecte en utilisant des camions à des heures fixes, ne permettront plus de résoudre la problématique de la gestion des déchets sans immobiliser plus de ressources humaines, ni affecter un plus grand budget (au moins 50\% de plus que les coûts générés aujourd'hui), ou sans effectuer une études préalable sur les périodes de collecte adéquates dans chaque zone, en prenant en considération tous les paramètres qu'il faut (le type de déchets à collecter, zone, densité de la population, événements spéciaux, possibilité de recyclage, possibilité d'optimisation du trajet de collecte, nombre d'agents d'assainissement à immobiliser sur le site, ...).
+
+% l'adoption de technologies innovantes permettra de trouver des solutions plus intégrées de gestion des déchets qui vont au-delà de l'utilisation traditionnelle du travail, des camions diesel et des sites d'enfouissement classiques. Dans cette section, vous lisez les technologies qui conduisent le marché émergent des déchets intelligents et la façon dont ils conduiront à des villes plus durables.
+
+
+\section{Enjeux et défis}
+La gestion de déchets actuelle rencontre plusieurs défis, comme :
+\begin{itemize}
+\item Optimiser la valorisation des déchets.
+\item Recycler un plus grand nombre d'objets.
+\item Mieux trier.
+\item Informer et sensibiliser les ménages.
+\item Éviter le débordement des conteneurs de déchets.
+\item Optimiser la consommation de carburant pour la collecte de déchets.
+\item Réduire la quantité de déchets générée.
+\item Rendre la collecte de déchets plus efficace.
+\item Garantir la sécurité des agents d'assainissement.
+\item Prévoir la bonne fréquence de collecte de déchets.
+\item Effectuer un suivi des collectes, des paramètres de déchets, et des indicateurs financiers.
+\item Permettre un reporting de la gestion des déchets.
+\item Permettre une transparence de gestion des déchets aux clients, ...etc.
+\end{itemize}
+Nous allons voir dans le chapitre suivant, qui constitue notre état de l'art, comment répondre à ces défis.
+
+\chapter{Vers une optimisation de la valorisation des déchets, grâce au Smart Waste Management}
+
+Le Smart Waste Management est l’ensemble des moyens mis en place pour garantir la réduction des déchets ou l’efficacité opérationnelle de leur gestion. \cite{ref2}
+
+Dans ce qui suit, nous allons décrire ces deux fonctions et montrer leur importance dans la gestion des déchets 
+\subsection{Efficacité opérationnelle de la gestion des déchets :} 
+
+L’efficacité opérationnelle peut signifier selon \cite{ref2} par exemple la réduction de la fréquence du ramassage des déchets, sauf que la plupart des agents d’assainissement se sont mis d’accord qu’il vaut mieux perdre en optimisation de temps de ramassage, que de prendre le risque de réduire la fréquence de ramassage, au risque de trouver un entassement de grosses quantités de déchets, qui peuvent véhiculer maladies et problèmes sanitaires. Il est donc important de trouver les bons indicateurs et la fréquence adéquate de collecte de déchets, ceci nécessiterait une analyse de données, et de plusieurs paramètres. \\ 
+ 
+L’optimisation peut aussi se faire grâce à la réduction de la distance parcourue pour arriver à la déchetterie, mais les agents d’assainissement visitent souvent des conteneurs qui ne nécessitent pas de les vider, ce qui est un gaspillage de temps et de carburant.\\
+ 
+La solution développée par plusieurs entreprises comme : Enovo \footnote{entreprise qui propose des solutions en Smart Waste Management à base de capteurs, et de traitement de données.}, consiste à utiliser un capteur du taux de remplissage du conteneur à déchets (indication si le conteneur est à pleine capacité, quand est-ce qu’il faudra le vider), d’un indicateur de température, ...etc.\\ 
+Les capteurs permettent aussi de prévoir les délais de remplissage d’une benne à ordure, ce qui permet par exemple de planifier les prochains itinéraires et de réduire les coûts jusqu’à 50 \% selon la société Enovo.\\
+ 
+\subsection{Réduction de la quantité de déchets créé :}
+ 
+Il est important de sensibiliser les utilisateurs à la manière de réduire leurs déchets, et selon \cite{ref2} les consommateurs aux États-Unis gaspillent 30 \% de leur nourriture ! D’où la proposition de mettre en place des applications M2M (machine-to-machine technologies), par exemple en utilisant la bonne technologie IOT, cela pourrait permettre à une épicerie de définir les produits qui se vendent quotidiennement et leurs quantités, ce qui permettrait de réduire les déchets.\\ Un autre système comme les réfrigérateurs intelligents pourrait permettre aux particuliers d’être alertés à l’approche de la date de péremption de leurs produits, et d’effectuer le suivi des aliments qu’ils achètent régulièrement et qu’ils consomment, ce qui permettrait de réduire les déchets et de protéger l’environnement, et de sensibiliser les consommateurs et les rendre plus consciencieux de leurs actes.\\
+Dans les sections suivantes, nous parlerons des solutions mises en place par des entreprises, ainsi que des sujets de recherche dans le Smart Waste Management, ça sera notre état de l'art.
+ 
+\section{Solutions proposées par les entreprises}
+\subsection{Introduction}
+Dans cette première partie de l'état de l'art, nous allons tout d'abord nous intéresser aux solutions proposées par des entreprises en Smart Waste Management., puis nous verrons quelques sujets de recherche de certaines universités et centres de recherche, dans la section suivante.\\
+Nous commencerons notre étude par les solutions novatrices proposées par des entreprises comme SigrenEa, Enevo, EcubeLabs \footnote{Trois startups actives dans le domaine du Smart Waste Management.}, pour améliorer l'efficacité opérationnelle grâce à un système de capteurs et de traitement de données.\\
+Nous nous intéresserons ensuite à des solutions plus ciblées, qui répondent à des besoins spécifiques : comme les robots ZRR, B.A.R.Y.L\footnote{Ce sont deux robots qui opèrent dans le domaine du Smart Waste Management, et qui ont des objectifs différents;}, le boîtier intelligent Eugène\footnote{Un boîtier intelligent qui facilite le tri sélectif dans les ménages.}.\\
+Nous terminerons ensuite en regardant une solution plus globale : la plateforme d'IBM pour le Smart Waste Management, et nous nous intéresserons par la suite aux smart trucks (camions intelligents) qui permettent la gestion des déchets.
+\subsection{SigrenEa}
+C’est une entreprise française spécialisée dans la collecte et la transmission des données dans le domaine des déchets, elle permet ainsi d’optimiser le tri et le traitement des déchets dans des points d’apport volontaires. La startup opère aussi à l’international en Italie, Belgique, et Espagne.\\
+ 
+Le conteneur SigrenEa se base sur l’Internet des objets en utilisant des capteurs qui émettent des informations de plusieurs sources. Les informations récoltées de provenances hétérogènes sont ensuite croisées et fiabilisées.\\
+ 
+Actuellement la société se focalise sur le big data pour améliorer ses services et fonctionnalités.\\
+ 
+SigrenEa propose selon son site officiel \cite{ref3} des solutions matérielles, logicielles, métier, un conteneur intelligent, ainsi que des solutions services et sur mesure pour ses clients.
+
+
+\subsubsection{Solutions matérielles }
+Les solutions proposées selon \cite{ref3} sont :
+\subsubsection*{Capteur de remplissage }
+C'est le composant le plus important, qui permet de détecter un phénomène physique et le transforme en signal électrique.Les types de capteurs proposés par SigrenEa sont :\\
+\begin{itemize}
+\item Capteurs pour conteneurs enterrés, à base de pâte d'installation souple (figure \ref{enterre}).
+\item Capteurs pour conteneur aérien, semi enterré ou enterré. La pâte d'installation est crantée (figure \ref{enterre}).
+\item Capteurs pour conteneur textile, utilisent la technologie infrarouge (figure \ref{textile}).
+\item Capteurs pour mini conteneurs, utilisent la technologie ultra-sons (figure \ref{textile}).
+\end{itemize}
+
+\begin {figure}[H]
+%\includegraphics [width =0.7\linewidth]{UPN.jpg}
+\begin{center} \includegraphics[width =0.36\linewidth]{conteneurs-enterres.jpg}
+\caption{Capteur pour conteneurs enterrés ou aériens
+\cite{ref8}}
+\label{enterre}
+\end{center}
+
+\begin{center} \includegraphics[width =0.36\linewidth]{conteneur-textile.jpg}
+\caption{Capteur pour conteneur textile ou mini conteneurs \cite{ref4}}
+\label{textile}
+\end{center}
+
+\end{figure}
+Ces capteurs ont tous en commun selon l'entreprise:
+\begin{itemize}
+\item L'autonomie en énergie et en communication.
+\item La compatibilité GSM/GPRS - Radio fréquence longue (169 et 868 MHZ) ou courte portée (WMBUS).
+\item Fonctionnement avec des piles interchangeables, de durées de vies différentes (entre 5 à 12 ans selon le modèle de capteur)
+\end{itemize}
+
+
+\subsubsection*{Contrôle d'accès }
+Le contrôle d'accès peut être utilisé pour les conteneurs enterrés ou semi enterrés, et peut être fourni avec ou sans pilote de verrou.
+\subsubsection*{PDA/Smartphone }
+L'entreprise a développé des applications mobiles, pour différents besoins, le PDA proposé permettra par exemple le suivi des informations transmises par les capteurs.
+
+\subsubsection{Solutions logicielles }
+Plusieurs solutions logicielles sont proposées par l'entreprise, les principales fonctionnalités sont selon \cite{ref5}:
+\begin{itemize}
+\item Systèmes d'alerte anti débordement, température, vidage, stagnation, déplacement.
+\item SAV (service après vente) interactif.
+\item Gestion des droits d'accès. 
+\item Tableau de bord métier.
+\item Historique des connexions.
+\item Gestion du parc de conteneurs.
+\item Rapports de remplissage, collecte, ...
+\item Optimisation de la collecte de déchets, grâce au système de planification de tournées.
+\item Contrôle d'intégrité des données.
+\item Géolocalisation des conteneurs.
+\item Pilotage de la maintenance des conteneurs.
+\item Calcul du taux de remplissage.
+\item Accès à un système d'information géographique.
+\item Système de qualification de tri par un agent.
+ 
+\end{itemize}
+
+Selon le site, l'entreprise met des capteurs de taux de remplissage au besoin et selon le type de déchets, par exemple dans le cas du verre, ils favorisent  un système d'auto apprentissage, à condition que le flux de déchets soit stable. Ainsi, on peut prévoir la fréquence de collecte des déchets. Par contre, dans le cas des ordures ménagères, l'entreprise utilise toujours des capteurs de remplissage.\\
+Durant les événements spéciaux comme en période de ski, l'application de taux de remplissage se met à jour avec les nouvelles données de fréquence de déchets. 
+\subsubsection*{Objectifs atteints }
+Selon l'entreprise, les solutions SigrenEa permettent :
+\begin{itemize}
+\item Optimisation de la collecte des déchets
+\item Réduction des émissions de CO2 de 15 à 25 \%
+\item Réduction des coûts de maintenance
+\item Génération de données analytiques sur les déchets collectés
+\end{itemize}
+\subsection{EcubeLabs}
+EcubeLabs a été créée en 2011, et a son siège social en Corée du Sud. C'est est l'une des compagnies leaders dans la gestion des déchets et logistique par IOT, selon \cite{ref6}.\\
+Elle intervient dans le Smart Waste Management en fabriquant des conteneurs connectés, et s'adresse aussi bien aux particuliers qu'aux professionnels, en Asie, Moyen-Orient, Europe et Amérique du Nord.\\
+
+
+Les solutions proposées selon \cite{ref7} sont :
+\begin{itemize}
+\item Clean Cube : permet de compresser les déchets du conteneur solaire, ce qui permet de contenir jusqu'à 8 fois plus de déchets que d'habitude.
+\item Clean CAP : c'est un capteur ultrasonique de niveau de remplissage.
+\item Clean City Networks (CCN) : c'est une solution Saas qui permet de traiter les données des capteurs Clean Cube et Clean CAP, et de faire de l'aide à décision.
+\end{itemize}
+
+\subsubsection*{Études de cas}
+La société diffuse sur son site officiel des études de cas en gestion des déchets, dont la mise en place de ses solution répond aux problématiques de gestion des déchets rencontrées dans chaque de figure, nous allons nous intéresser à 3 cas spécifiques de gestion de déchets : la ville de Seoul en Corée du Sud, Aéroport de Dublin, et le supermarché Lotte à Seoul. 
+\subsubsection*{Gestion des déchets dans les villes - cas de Seoul en Corée du Sud}
+Les principaux problèmes soulignés par \cite{ref8} dans la ville de Seoul, dont le contexte peut être assimilée à de grandes villes comme Paris, dont la densité de la population est importante, sont :
+\begin{itemize}
+\item Nombre de poubelles publiques insuffisant
+\item Débordement des déchets des poubelles 
+\item Collecte des déchets 4 fois par jour, mais dans certains quartiers de la ville, seuls quelques conteneurs étaient suffisamment remplis pour cette fréquence de collecte élevée. 
+\end{itemize}
+Les solutions proposées par la société pour remédier à ce problème sont :
+\begin{itemize}
+\item Utilisation des conteneurs Clean Cube, qui permettent de compresser les déchets.
+\item Utilisation de la solution Clean City Networks pour le suivi des déchets en temps réel, et des délais de remplissage particulièrement.
+\item Installation des capteurs Clean Cap pour mesurer le niveau de remplissage, solution essentiellement utilisée dans les villages traditionnels de Seoul. 
+\item Les données ont montré des exigences de collecte différentes selon les zones et les conteneurs.
+\end{itemize} 
+Les conséquences de la mise en place de ces solutions sont selon \cite{ref8} :
+\begin{itemize}
+\item Réduction de 66\% de la fréquence de collecte des déchets
+\item Réduction des coûts de collecte des déchets de 83\%
+\item Augmentation du taux de réorientation des déchets à 46\%
+\item Génération d'informations sur le niveau de remplissage basées sur les données intelligentes, ce qui permet une rapide prise de décision.
+\item La ville est ainsi devenue plus propre.
+\end{itemize}
+
+\subsubsection*{Aéroport de Dublin}
+Les problèmes recensés à l'aéroport de Dublin sont selon \cite{ref8}:
+\begin{itemize}
+\item Les conteneurs de déchets créent des problèmes de design à l'intérieur de l'aéroport.
+\item La fréquence de collecte de déchets est fixe et est de 4 fois par jour.
+\item La fréquence élevée de la collecte des déchets multipliée par le grand nombre de conteneurs, entravait l'expérience client.
+\end{itemize}
+Les solutions proposées par la société sont :
+\begin{itemize}
+\item Installation des capteurs de taux de remplissage Clean CAP
+\item Analyse des données recueillies grâce au système, ce qui a révélé de nouvelles tendances, et qui permet d'optimiser la récolte des déchets.
+\end{itemize}
+Les résultats de la mise en place de ces solutions sont \cite{ref8}:
+\begin{itemize}
+\item Réduction de la fréquence de collecte de déchets.
+\item Augmentation de 90\% de l'efficacité opérationnelle: des travailleurs affectés à la collecte de déchets ont pu être affectés à d'autres tâches.
+\item L'utilisation de modèles prédictifs permet de réduire encore plus la fréquence de collecte de déchets.
+\end{itemize}
+\subsubsection*{Supermarché Lotte}
+Le dernier cas qui nous allons aborder, toujours selon l'analyse et les solutions proposées par \cite{ref8} est celui de la gestion des déchets d'un supermarché,la problématique concerne trois défis :
+\begin{itemize}
+\item Les conteneurs de déchets se remplissent rapidement, ce qui implique une collecte très fréquente.
+\item La collecte des déchets se fait durant l'exploitation des magasins
+\item La collecte entravait l'expérience client.
+\end{itemize}
+La solution proposée est l'installation de la solution Clean Cube avec des tableaux LED de publicité (figure \ref{pub}).\\
+Les résultats de cette installation sont :
+
+\begin{itemize}
+\item Augmentation de l'efficacité de la collecte
+\item Un impact publicitaire élevé des panneaux de publicité LED.
+\item Une expérience client plus agréable.
+\end{itemize}
+\begin {figure}[H]
+\begin{center} \includegraphics[width =1\linewidth]{smart-bin-at-department-store.jpg}
+\caption{Conteneur intelligent EcubeLabs devant un supermarché \cite{ref8}}
+\label{pub}
+
+\end{center}
+\end{figure}
+
+\subsection{Enevo}
+La société Enevo a été fondée en 2010, avec comme objectif de transformer l'impact financier, environnemental et social des déchets.\\
+Enevo a son siège social à Espoo, en Finlande, et des bureaux aux États-Unis, au Royaume-Uni, en Allemagne et au Japon.\cite{ref9}\\
+
+La société propose plusieurs solutions, articulées autour des capteurs de mesure, du suivi, de l'analytique et la prédiction \cite{ref9}, voici leurs solutions selon \cite{ref9} :
+\begin{itemize}
+\item Analyse des données de suivi de déchets générées, et promouvoir une meilleure aide à la décision
+\item Suivi des déchets:
+\begin{itemize}
+\item Détermination de la base de référence.
+\item Visualisation des plannings de collecte de déchets planifiés et réalisés.
+\item Suivi du taux de remplissage des conteneurs.
+\item Calcul de la quantité de déchets générée.
+\item Calcul du taux de déchets réorientés pour être recyclés.
+\item Gestion de la vitesse de remplissage des conteneurs.
+\end{itemize}
+\item Prévision : 
+\begin{itemize}
+\item Des délais et des endroits où les conteneurs se remplissent.
+\item Des sites dont les déchets n'ont pas été collectés et qui risquent de déborder.
+\item des conteneurs qui nécessitent d'être collectés.
+\item Des conteneurs qui ne doivent pas encore être vidé.
+\end{itemize}
+\item Reporting de suivi des activités de collecte de déchets et prise de décisions sur la base des données (figure \ref{tab}):
+\begin{itemize}
+\item Réception d'enregistrement horaire à chaque collecte de déchets.
+\item Suivi du volume et du poids de déchets collectés.
+\item Calcul des quantités récoltées sur une période de temps.
+\item Validation si les collections manquées ont entraîné un débordement.
+\item Surveillance des résultats de la collecte selon le calendrier convenu.
+\item Exportation des données pour un traitement plus approfondi.
+\end{itemize}
+\item Technologie de mesure selon :
+\begin{itemize}
+\item utilisation d'une technologie ultrasonique avancée pour la détection de niveaux de remplissage, température, inclinaison, et accélération.Ce qui permet de générer plein de données sur les déchets.
+\item Contrôle du niveau de remplissage
+\item Détection automatique de la collecte et livraison de déchets.
+\item Système d'alertes en cas de changements soudains ( niveau de remplissage, débordement, ...)
+\item Le capteur est pré-installé à un conteneur, il nécessite une maintenance minimale, et sa durée de batterie est de 10 ans maximum.
+\end{itemize}
+\end{itemize}
+\begin {figure}[H]
+\begin{center} \includegraphics[width =1\linewidth]{enevo-pulse-solution.jpg}
+\label{tab}
+\caption{Solutions Enevo \cite{ref9}}
+
+\end{center}
+\end{figure}
+\subsection{Tri de matériaux grâce au robot ZRR}
+Parmi les types de déchets présentés au début, il y a les matériaux de construction, dont le tri est interdit manuellement. Une start-up finlandaise ZenRobotics Ltd créée en 2007, s'est engagée dans la fabrication de robots high-tech pour le recyclage de ce type de déchets qui peuvent être dangereux, et a fabriqué ZRR (ou ZenRobotics Recycler)\\
+Suez, le n°2 mondial dans la gestion de l'eau et des déchets, a fait de la start-up un partenaire depuis 2011, pour adopter "le tout premier processus de tri multi-robotisé de déchets au monde !" selon \cite{ref12}\\
+\subsubsection*{Fonctionnement du robot ZRR:}
+\begin {figure}[H]
+\begin{center} \includegraphics[width =1.2\linewidth]{zenrobotics-en.png}
+\caption{Illustration du fonctionnement du robot ZRR \cite{ref13}}
+\label{zrr}
+\end{center}
+\end{figure}
+Le robot (voir figure \ref{zrr} ci-dessus) est doté d'une entrée des déchets à trier, de capteurs, un système de contrôle (le cerveau de ZRR), une pince intelligente (figure ci-dessous \ref{pince}), des bacs pour récupérer les fractions triés, un bac pour recueillir la décharge.
+\begin {figure}[H]
+\begin{center} \includegraphics[width =0.6\linewidth]{pinceZRR.jpg}
+\caption{Robot ZRR \cite{ref14}}
+\label{pince}
+\end{center}
+\end{figure}
+\subsubsection*{Les résultats de l'utilisation de ZRR :}
+Selon un article de Suez \cite{ref12}, l'utilisation du robot ZRR a permis :
+\begin{itemize}
+\item Un tri minutieux des déchets, ce qui permet d’accroître le nombre de déchets traités et recyclés.
+\item Recyclage et valorisation de 12000 tonnes de matière première par an.
+\item Le taux de rendement est passé de 70 \% à 90\%, il serait possible de dépasser les 95\% à terme.
+\item Possibilité pour le robot de soulever jusqu'à 10 kg, à chaque cycle de 3 à 4 secondes.
+\item Le rendement pourrait passer de 12000 tonnes/an à 60000 tonnes/an, si l'usine autorisait le robot à travailler près de 6000 heures.
+\end{itemize}
+\subsection{B.A.R.Y.L, la poubelle mobile}
+B.A.R.Y.L a été conçu grâce au partenariat entre la SNCF et la start-up française Immersive Robotics, l'objectif étant de mettre à l'usage des utilisateurs une poubelle mobile et intelligente, capable de reconnaître les mouvements des usagers, et se dirige vers eux pour récolter leurs déchets. (figure \ref{baryl})\\
+\begin {figure}[H]
+\begin{center} \includegraphics[width =0.6\linewidth]{baryl.jpg}
+\caption{La poubelle mobile B.A.R.Y.L \cite{ref15}}
+\label{baryl}
+\end{center}
+\end{figure}
+\subsubsection*{Fonctionnement de la poubelle B.A.R.YL}
+Selon \cite{ref15} et \cite{ref16} :
+\begin{itemize}
+\item  Le robot est équipé de LIDARS, sonars, et caméras 3D, et utilise sa cartographie interne pour se repérer de façon autonome.
+\item B.A.R.Y.L se déplace aléatoirement et peut émettre des sons et des couleurs selon les situations. 
+\item Dès qu'une personne fait un signe de la main pour appeler le robot, il se dirige directement vers elle.
+\item Le robot étant doté d'intelligence artificielle, il apprend progressivement à reconnaître les personnes qui souhaitent lui remettre un déchet.
+\item Le capteur intégré à B.A.R.Y.L, lui permet d'analyser son niveau de remplissage, de retourner à la base de collecte de déchets, et d'alerter un agent d'entretien lorsqu'il doit être vidé, par email, notification ou SMS.
+\end{itemize}
+\subsubsection*{Résultats}
+La SNCF a effectué des tests à Paris Gare de Lyon en Novembre 2016, afin de tester B.A.R.Y.L, et la poubelle a réussi à récolter les déchets de manière ludique et intuitive, en phase de tests.
+
+\subsection{Un boîtier intelligent pour le tri de déchets ménagers : Eugène by UZER}
+Uzer est une start-up parisienne, qui n'a pas encore 3 ans, mais qui se démarque déjà grâce à son produit Eugène : le boîtier connecté, qui permet le tri des déchets ménagers, de façon ludique.\cite{ref11} \\
+On peut déjà réserver le produit (figure \ref{uzer}), qui sera prochainement disponible à la vente au prix de : 79 \euro \cite{ref10}.
+\begin {figure}[H]
+\begin{center} \includegraphics[width =1\linewidth]{uzer.png}
+\caption{Le boîtier intelligent Eugène \cite{ref10}}
+\label{uzer}
+\end{center}
+\end{figure}
+Les principales fonctionnalités du produit sont selon \cite{ref10}:
+\begin{itemize}
+\item Aide au tri des déchets, à chaque scan d'un produit, Eugène nous spécifie le nom (ou une classification) du déchet ainsi que des consignes de tri sur son écran LCD.
+\item Système de récompense qui permet à chaque tri de gagner des points pour acheter des produits de la même marque.
+\item Préparation des prochaines courses à partir de la liste des produits scannés: le boîtier intelligent est connecté à une application qui permet la gestion de notre liste de courses, ainsi que l'ajout de la liste dans le panier d'un site d'achat en ligne.
+\item Suivi de nos consommations : Tout est répertorié dans l'application mobile d'Eugène : produits achetés, quantités, ...
+\end{itemize}
+
+\subsection{La plateforme intelligente de Smart Waste Management d'IBM}
+IBM propose plusieurs solutions pour la gestion intelligente des déchets, en voici quelques unes selon \cite{ref24} :
+
+\subsubsection*{Considérer l'objet à jeter comme un actif à gérer, et pas comme un déchet :} 
+Selon \cite{ref24}, Michael THEROUX, un consultant en réupération des ressources et avocat en conversion propre des déchets en énergie renouvelable incite les municipalités à adopter ce comportant, il dit selon \cite{ref24} : "Le premier message pour les municipalités en considérant les meilleures pratiques pour la gestion des déchets est la transition de voir rejeter les matériaux en tant que déchet, un fardeau, afin de reconnaître chaque ferraille en tant qu'actif potentiel à récupérer et retourner sur le marché ",
+
+\subsubsection*{De puissants outils analytiques : }
+IBM a conçu selon \cite{ref24} de puissants outils analytiques pour mettre à l'utilisateur de visulaiser des données sur la collecte des déchets, des informations fincancières et démogrphiques, ainsi que d'autres données utiles à la gestion de déchets comme : la météo, la circulation et la variance de la population.\\
+Toutes ces données peuvent être présentées dans un environnement visuel analytique facilement compréhensible.\\
+Voici quelques fonctionnalités de cette plateforme d'analytique selon \cite{ref24} :
+\begin{itemize}
+\item un aperçu administrateur : ce qui permet de visulaiser de façon globale les données financières de gestion des déchets, ainsi que des indicateurs de performance,
+\item possibilité d'effectuer des analyses de tendance, reporting, ...
+\item analyse de la chaine logistique, et comparaison des caractèristiques de chaque collecte ansi que du poids de la charge, entre ce qui est prévu et le réel,
+\item un portail destiné au client, pour le sensibiliser et l'informer de l'état en temps réel de la gestion de déchets.
+\end{itemize}
+
+\subsection{Les smart trucks, exemple de FleetMind}
+FleetMind Solutions est selon leur site officiel \cite{ref22} le leader technologique en smart truck (camion intelligent). FleetMind Solutions intervient en Amérique du Nord, et a déjà installé leurs solutions sur des milliers de véhicules.\\
+Leurs solutions sont spécialement conçues pour les environnements de recyclage, et ont permis aux sociétés dans le domaine de la gestion des déchets selon \cite{ref22} de "relier leurs conducteurs et véhicules à des opérations commerciales en temps réel afin d'assurer une meilleure productivité, sécurité, durabilité, rentabilité et service à la clientèle".
+\subsubsection*{Les solutions proposées}
+Les agents et responsables de collecte de déchets sont confrontés à des pression importantes pour fournir des services de collecte "plus efficaces, réactifs, respectueux de l'environnement et sûrs" selon \cite{ref22}.\\
+C'est pour résoudre cette problématique que FleetMind met en place une solution smart truck pour l'industrie des déchets, en fournissant les fonctionnalités suivantes selon \cite{ref22} :
+\begin{itemize}
+\item Solutions informatiques embarquées (onboard computing (OBC) solutions) afin de capturer et stocker des modules de contrôle électronique (electronic control module (ECM)), et d'autres données du véhicule.
+\item Rapports de performance précis, à partir des données récoltées.
+\item Alertes en temps réels
+\item Informations en temps réel sur le poids de charge du camion, l'état de l'itinéraire, l'achèvement du service, la télémétrie du véhicule, l'activité du conducteur, ...
+\item Possibilité d'intégrer et de gérer de nouveaux composants dans le système comme : des caméras, balances, lecteurs RFID, pression des pneus et surveillance du carburant.
+\end{itemize}
+La figure suivante (\ref{fleetmind}) représente un camion intelligent équipé par plusieurs modules FleetMind.
+\begin {figure}[H]
+\begin{center} \includegraphics[width =1.1\linewidth]{Fleetmind.jpg}
+\caption{Un smart truck FleetMind \cite{ref23}}
+\label{fleetmind}
+\end{center}
+\end{figure}
+
+
+
+\subsubsection*{Résultats de la mise en place du Smart Truck}
+Selon \cite{ref22} la mise en place du Smart Truck permet :
+\begin{itemize}
+\item une visibilité totale tout au long de l'itinéraire,
+\item une meilleure responsabilisation des conducteurs,
+\item l'amélioration du service client,
+\item l'optimisation de la sécurité,
+\item une consommation efficace du carburant,
+\item un contrôle pus facile, 
+\item et une meilleure communication et transfert de données en temps réel entre conducteurs, véhicules et backoffice.
+\end{itemize}
+
+\section{Sujets de recherche:}
+\subsection{Introduction}
+Nous allons aborder dans ce chapitre pour commencer le concept de la poubelle intelligente et son émergence dans un laboratoire de recherche à l'École d'ingénierie industrielle et de systèmes de la Georgia Institute of Technology (ou Georgia Tech), à Atlanta, aux États-Unis.\\ Nous nous intéresserons ensuite à quelques sujets de recherche d'actualité  qui permettent de garantir l'efficacité opérationnelle, ainsi que la réduction des déchets en utilisant des méthodes de Smart Waste Management. 
+\subsection{Le concept de la poubelle intelligente}
+Le principe de la poubelle intelligente selon Le Georgia Tech news center \cite{ref17} est de rendre la sortie des poubelles comme un voyage agréable, qui permettra de revaloriser quelques uns de nos déchets comme des batteries ou piles en bon état, un clavier, une boite vide ...\\
+Il ne sera même pas utile de trier ces déchets, car la poubelle intelligente l'aura fait pour nous, tout ce qu'on aura à faire est l'inventaire de nos déchets à recycler et le calcule de la valeur du chèque que ça nous rapportera.\\
+Le concept de la poubelle intelligente revient selon Le Georgia Tech news center à Valérie THOMAS, qui est professeure associée à l'École d'ingénierie industrielle et de systèmes de Georgia Tech.\\
+Elle disait selon \cite{ref17} au moment où elle faisait ses recherches, «Le recyclage et les déchets de consommation sont encore gérés avec la technologie des années 1950», "Bien sûr, ça ne peut pas continuer. Le flux de produits hors d'un ménage doit être géré avec au moins autant d'intelligence que le flux de produits dans un ménage. C'est une sorte d'évidence".\\
+Cette approche de poubelle intelligente a attiré plusieurs entreprises, ainsi que l'Environmental Protection Agency (EPA), étant donné que les systèmes Smart Trash fournissent "non seulement des moyens durables et productifs pour éliminer les articles, mais aussi redéfinissent la relation que les gens ont avec leurs ordures". \cite{ref17}\\
+\subsubsection*{Les premiers projets de recherche :}
+Plusieurs fabricants, recycleurs, et chercheurs se sont engagé à travailler ensemble pour concrétiser la poubelle intelligente. Ils ont donc créé le projet PURE  (Promoting Understanding of RFID and the Environment) qu'on peut traduire en "Promouvoir la compréhension du RFID et de l'environnement". Des représentants de sociétés telles que Wal-Mart et Hewlett-Packard, ont même pris part à ce projet.\\
+Le projet consistait selon \cite{ref18} à identifier premièrement si un produit peut être recyclé et sa valeur commerciale : la poubelle intelligente scanne le produit en lisant le tag RFID ou le  CUP (code universel des produits) dont il est pourvu, ensuite relie grâce à une connexion wi-fi le produit aux services de recyclage afin d'organiser la collecte de déchets.\\
+Par la suite, les produits collectés seront vendus aux enchères via des services en ligne spécialisés.\\
+Tout ce qu'aura à faire l'utilisateur est de glisser dans la poubelle intelligente les produits qu'il pense recyclables.\\
+
+
+
+
+
+ 
+
+
+
+
+\subsection{Un système de gestion des déchets intelligents en utilisant un robot de déchargement automatique}
+Le projet de gestion des déchets intelligents en utilisant un robot de déchargement automatique consiste selon \cite{ref19} à placer des capteurs dans des bacs communs à ordures, lorsque le niveau de remplissage est atteint, une alerte est envoyée au robot PIC microcontrôleur. Ce robot permet de collecter les déchets automatiquement.\\
+
+Le document se focalise sur les types de déchets suivants selon \cite{ref19} : les déchets domestiques comme les déchets alimentaires dégradables, les feuilles, et les animaux morts, ainsi que les déchets non dégradables comme : les plastiques, les bouteilles, le nylon, les déchets médicaux et hospitaliers.\\
+Dans ce qui suit, nous allons décrire les solutions proposées par les chercheurs, qui ont participé à ce projet, en se basant sur le système existant ci-dessous.
+
+\subsubsection*{Le système existant :}
+Voici le système sur lequel les chercheurs dans ce projet se sont basés (voir \ref{syst existant}), pour proposer leur solution.
+\begin {figure}[H]
+\begin{center} \includegraphics[width =1\linewidth]{1.png}
+\caption{Diagramme système existant \cite{ref19}}
+\label{syst existant}
+\end{center}
+\end{figure}
+\subsubsection*{Le système proposé :}
+
+\begin {figure}[H]
+\begin{center} \includegraphics[width =1\linewidth]{sys2.png}
+\caption{Diagramme du système proposé \cite{ref19}}
+\label{fig2}
+\end{center}
+\end{figure}
+Les chercheurs ont proposé un nouveau système avec la configuration ci-dessus \ref{fig2} 
+
+Le système proposé contient les composants suivants \cite{ref19} :
+\begin{itemize}
+\item microcontrôleur PIC,
+\item écran LCD,
+\item capteur infrarouge,
+\item capteur à ultrasons,
+\item capteur de pollution de l'air,
+\item modem GSM,
+\item circuit des conducteurs,
+\item relais,
+\item modèle de robot,
+\item moteur en courant continu.\\
+\end{itemize}
+
+Nous remarquons que la contribution des chercheurs pour parvenir à leur projet d'automatisation consiste à rajouter ou à modifier des composants par d'autres modèles par exemple :
+\begin{itemize}
+\item rajout d'un capteur de pollution de l'air (CO2),
+\item pose de capteurs à ultrasons TX et RX, au lieu du premier capteur à ultrasons,
+\item rajout de transmetteurs IR,
+\item des composants : SCU, oscillateur, circuit d'interfaçage,
+\item de circuits de conducteurs,
+\item de relais,
+\item d'un modèle de robot,
+\item d'un moteur en curant continu,
+\item d'un écran LCD pour l'affichage,
+\item et changement du microcontrôleur initial par un microcontrôleur PIC.\\
+\end{itemize}
+\subsubsection*{Fonctionnement}
+Dès que le microcontrôleur PIC reçoit un signal du capteur du niveau de remplissage, le robot utilisé pour collecter le niveau de remplissage est élevé pour déplacer le robot dans la zone d'ordures et décharger les déchets à l'aide d'un moteur à courant continu. \\ 
+Pour optimiser la gestion intelligente des déchets solides, les chercheurs proposent selon \cite{ref19} de compléter ce système de déchargement automatique, par un système d'aide à la décision afin de traiter les données de différents formats générées, les modèles numériques ainsi que les scénarios de décision multi-objectif. \\
+Ceci pourra se faire selon eux en intégrant un système le systèmes d'aide à la décision à des informations géographiques pour "optimiser les processus de collecte, de transport, de traitement et d'élimination" \cite{ref19}.
+
+\subsection{Les océans et le Smart Waste Management}
+\subsubsection*{Problématique des océans}
+L'ocèan est jugé trop éloigné des préoccupations quotidiennes, et pourtant selon \cite{ref25}, il absorbe 30\% des gaz à effet de serre, et produit 50 \% de notre oxygène, tout comme il nourrit 1 milliard de personnes dans le monde.\\ Toutefois, des études alarmantes déclarent qu'en 2050 selon \cite{ref25}, l'océan contiendra plus de plastiques que de poisson si rien n'est fait, et selon une autre étude, le plastique sera présent dans les organsmes de 100 \% des tortues de mer et 40 \% des oiseaux marins à cause de leur ingération de ces déchets !\\
+Il est donc ugent d'agir et de prendre des mesures pour protéger les océans.\\
+Nous allons dans cette section nous intéresser aux solutions novatrices proposées dans ce numéro de magazine (\cite{ref25}) consacré aux océans.
+\subsubsection*{Des réseaux spécifiques pour connecter les océans à Internet}
+Mandar Chitre, est directeur du laboratoire de recherche acoustique sous-marine à l'université nationale de Singapour, il est fondateur du réseau Subnero, qui permet de connecter les océans à Internet selon \cite{ref25}.\\
+Le principe de fonctionnement de Subnero est qu'il est composé selon \cite{ref25} de routeurs, dispersés à des centaines de métres ou quelques kilomètres les uns des autres.\\
+Il utilise selon \cite{ref25} des ondes sonores au lieu des ondes électromagnétiques utilisées en surface pour la 4G par exemple ou le wifi, et qui ne fonctionnement pas dans un milieu sous-marin.\\
+Les chercheurs ont aussi développé dans le cadre du projet Subnero des systèmes robustes (figure \ref{subnero}) pour pouvoir recueillir les données de leurs capteurs sous-marins de suivi environnemental et piloter leurs robots, selon \cite{ref25}.\\
+
+\begin {figure}[H]
+\begin{center} \includegraphics[width =0.6\linewidth]{subnero.png}
+\caption{Modems acoustiques sous-marins \cite{ref26}}
+\label{subnero}
+\end{center}
+\end{figure}
+Toutefois ce projet rencontre quelques défis dans la transmission longue distance des signaux sonores, car dans un mileu marin selon \cite{ref25} l'environnement est très bruyant par les sons de baleines, bateaux, ...etc. Les chercheurs utilisent donc des fréquences à faible portée pour ne pas impacter les écosystèmes.\\
+Les chercheurs travaillent actuellement sur la possibilité d'augmenter le débit de données à transmettre.
+
+\chapter{Pour une meilleure gestion de déchets, innovons !}
+\section{Comparaison des solutions proposées par les entreprises}
+Plusieurs solutions ont été proposées par des entreprises un peu partout dans le monde, et pourtant on trouve bien des points en commun entre elles, et quelques petites différences.\\
+Cette comparaison n'est pas exhaustive car elle reprend que les fonctionnalités énoncées dans l'état de l'art.
+
+\subsection*{Solutions à base de systèmes de capteurs, et traitement de données}
+\subsubsection*{Positionnement des entreprises}
+\begin{itemize}
+\item SigrenEa est une startup française, mais qui opère aussi en Italie, Belgique et Espagne.
+\item EcubeLabs a son siège en Corée du Sud, mais s'adresse aux professionnels et particuliers en Asie, Moyen-Orient, Europe et Amérique du Nord.
+\item Enevo a son siège en Finlande, et des bureaux aux États-Unis, Royaume-uni, en Allemagne et au Japon.
+\end{itemize}
+\subsubsection*{Les conteneurs intelligents}
+SigrenEa, EcubLabs, et Enevo spécifient quelques types de conteneurs qui sont en principe des poubelles grand ou petit format, dotées de capteurs ou de quelques options propres à chaque entreprise, et qui rendent les conteneurs intelligents :
+\begin{itemize}
+\item Pour SigrenEa, il existe donc des conteneurs enterrés, des conteneurs aériens, mini conteneurs, et conteneurs textiles.
+\item EcubeLabs fabrique des conteneurs selon l'usage, ils peuvent être dotés de tableaux LED pour le design et la publicité dans le cas du supermarché Lotte en Corée du Sud par exemple, et propose des conteneurs Clean Cube qui permettent de compresser les déchets.
+\item Le conteneur intelligent Enevo contient un capteur pré-installé.
+\end{itemize}
+
+\subsubsection*{Les capteurs}
+\begin{itemize}
+\item SigrenEa a des capteurs pour chaque type de conteneur, mais ils ont tous en commun le calcul du taux de remplissage et ces spécifications techniques : autonomie en énergie, compatibilité GSM/GPRS - radio fréquence longue ou courte portée, et fonctionnement avec des piles interchangeables de durée de vie importante.
+\item EcubeLabs propose le capteur à ultrasons Clean CAP, de niveau de remplissage.
+\item Les capteurs Enevo utilisent une technologie à ultrasons aussi, mais permettent en plus du calcul du taux de remplissage, de mesurer la température, inclinaison, et accélération. 
+\end{itemize}
+
+\subsubsection*{Solutions logicielles}
+Les solutions logicielles proposées sont très variées :
+\begin{itemize}
+\item SigrenEa
+\begin{itemize}
+\item systèmes d'alerte anti débordement, température, vidage stagnation, déplacement,
+\item service après vente interactif,
+\item gestion des droits d'accès,
+\item tableau de bord métier,
+\item historique des connexions,
+\item gestion du parc de conteneurs,
+\item rapports de remplissage, collecte, ...
+\item système de planification de tournées,
+\item contrôle d'intégrité des données,
+\item géolocalisation des conteneurs,
+\item pilotage de la maintenance des conteneurs,
+\item calcul du taux de remplissage,
+\item accès à un système d'information géographique,
+\item système de qualification de tri par un agent.
+
+\end{itemize}
+ \item EcubeLabs : offre la solution Clean City Networks, qui permet de traiter les données des capteurs Clean Cube et Clean CAP, et de faire de l'aide à décision : 
+ \begin{itemize}
+ \item suivi des déchets en temps réel,
+ \item suivi des délais de remplissage en temps réel,
+ \item analyse des données et visualisation des nouvelles tendances,
+ \item utilisation de modèles prédictifs.
+ \end{itemize}
+ \item Enevo :
+ \begin{itemize}
+ \item analyse des données de déchets récoltées,
+ \item visualisation des plannings de collecte,
+ \item suivi des taux de remplissage,
+ \item détermination d'une base de comparaison de référence,
+ \item gestion de la vitesse de remplissage des conteneurs,
+ \item prévision des délais et des endroits de remplissage des conteneurs,
+ \item localisation des sites dont les déchets n'ont pas été collectés et qui risquent de déborder,
+\item  prévision des conteneurs qui nécessitent d'être collectés, ou pas,
+\item reporting de suivi des activités de collecte de déchets,
+\item réception d'enregistrement horaire à chaque collecte de déchets,
+\item suivi du volume et du poids de déchets collectés,
+\item calcul des quantités récoltées sur une période de temps,
+\item validation si les collections manquées ont entraîné un débordement,
+\item surveillance des résultats de la collecte selon le calendrier convenu,
+\item Et exportation des données pour un traitement plus approfondi.
+ \end{itemize}
+\end{itemize}
+
+\subsection{Autres solutions}
+Les robots ZRR, la poubelle mobile B.A.R.Y.L, et le boîtier intelligent Eugène ont des objectifs différents, mais permettent chacun dans son domaine d'intervention d'optimiser la valorisation des déchets et le recyclage.\\
+Les smart trucks sont à base de système embarqué qui rajoute une intelligence aux véhicules où il est intégré, tout en offrant une possibilité d'enrichir le système avec des modules compatibles comme des caméras, capteurs, ...\\
+La plateforme intelligente d'IBM est très complète pour l'analyse de données, et il est important d'adopter le principe de considérer les déchets comme des actifs, à traiter puis à revendre.
+
+
+
+\section{Orientations actuelles en recherche}
+Depuis l'apparition du concept de la poubelle intelligente en 2003, les entreprises et les centres de recherche ne cessent d'innover, parmi quelques sujets de recherche qui datent de 2016 ou 2017, voici quelques défis/sujets :
+\begin{itemize}
+\item Comment effectuer le déchargement automatique de déchets.
+\item Comment connecter les océans à Internet pour effectuer le suivi des déchets plastiques.
+\item La gestion intelligente des déchets en utilisant différentes technologies de réseaux de capteurs sans fil.
+\item Enquêtes sur les systèmes intelligents de collecte des déchets basés sur l'IoT.
+ 
+\end{itemize}
+\section{Perspectives en Smart Waste Management}
+Les solutions proposées par certaines des entreprises actives dans le domaine du Smart Waste Management et dont on a parlé dans le chapitre précédent sont très diversifiées, toutefois le domaine du Smart Waste Management est encore récent, nous pouvons encore contribuer en enrichissant ses fonctionnalités. 
+
+\subsection{Objectif initial de la smart trash - comment aller à la déchetterie peut devenir une partie de plaisir ?}
+L'objectif initial de la fondatrice du concept de la smart trash (poubelle intelligente) n'est pas encore complètement atteint dans nos villes aujourd'hui.\\ Certes, le fait de rajouter de l'intelligence à nos conteneurs de déchets change beaucoup les choses, mais si on rajoutait encore certaines fonctionnelles, on pourrait mieux s'approcher de l'objectif.\\
+L'une des idées qui nous a plu en faisant cet état de l'art, est l'intégration de tableaux LED pour la publicité sur les conteneurs (solution proposée par EcubeLabs). Toutefois, si on généralisait cette pratique, nous pensons que la déchetterie deviendrait un endroit plus convivial, tout dépendra du contenu à afficher sur les conteneurs ensuite, cela peut être des œuvres par exemple numérisées par Google Arts et Culture par exemple \footnote{Site officiel : https://www.google.com/culturalinstitute/beta/?hl=fr}.\\
+Nous pouvons aussi en plus de l'image, rajouter de la musique zen et bien être.\\
+Si on plantait quelques plantes tout autour, on aura un résultat garanti !
+\subsection{Réduction de la quantité des déchets générée - on en s'en occupe pas beaucoup}
+L'une des deux fonctions principale du Smart Waste Management ne semble pas être la priorité selon notre état de l'art, il semble urgent et important de s'en occuper.\\
+Cela peut se faire par exemple avant chaque achat dans les supermarchés par exemple, dans ce cas, il faudra prévoir les quantités quotidiennes et les produits fréquemment consommés, comme suggéré dans le chapitre 1, selon \cite{ref2}.\\
+Il faudra aussi mieux nous intéresser aux réfrigérateurs intelligents, et peut être rajouter des fonctionnalités dans une solution comme le boîtier intelligent Eugène qui permet en plus de préparer notre liste de courses.
+\subsection{Sensibilisation}
+Les utilisateurs n'ont pas toujours l'information sur la nature et la qualification de leurs déchets, si on disposait de bornes devant les conteneurs, il faudrait que le scan d'un produit délivre des informations sur :
+\begin{itemize}
+\item le type de déchet,
+\item sa qualification,
+\item l'économie carbone générée en le recyclant,
+\item possibilité de nous rapporter de l'argent en cas de vente à des entités de recyclage,
+\item situation du déchet dans le monde, par exemple une information sur l'état d'un matériau : la quantité d'aluminium restante dans le monde, ou le fait que le plastique soit ingéré par des animaux dans les océans, ...
+\item les informations peuvent être présentées sur des tableaux LED par exemple de façon ludique pour cibler même les enfants.
+
+\end{itemize}
+\subsection{Généralisation du système de récompenses}
+Il existe des entreprises, comme le kiosque Réco-France qui permet de récompenser les utilisateurs avec de l'argent en forme de bons d'achat, s'ils viennent déposer leurs bouteilles vides en plastique.\\ 
+Cette pratique devrait mieux se généraliser étant donné que cela motive les utilisateurs au recyclage, et évite aux entreprises de recyclage d'effectuer elles-mêmes la collecte de cette catégorie de déchets en plastique.
+
+\subsection{Pathologies et Smart Waste Management}
+Il existe des maladies comme la syllogomanie ou le syndrome de Diogène qui sont étroitement liées à la gestion des déchets, pas parce qu'elles sont le résultat de maladies provenant de déchetterie sauvage comme on pourrait le penser, ... C'est ce que nous verrons dans cette section.
+
+\subsubsection*{La syllogomanie et le syndrome de Diogène}
+\paragraph*{La syllogomanie :}
+"La pathologie de la syllogomanie concerne les personnes qui accumulent des objets de manière compulsive et ne parviennent pas à s'en séparer." \cite{ref20}\\
+Selon un reportage de France 2 de 2015, 5 \% de la population française pourrait être touchée par cette maladie \cite{ref20}
+\paragraph*{Syndrome de Diogène :}
+Le syndrome de Diogène "ronge des personnes de tout âge, le plus souvent des personnes âgées. Il se caractérise par un isolement social, un refus de toute aide et une négligence extrême de l'hygiène corporelle et domestique". \cite{ref21}\\
+Des statistiques stipulent qu'en 2015, 148 arrêtés préfectoraux de personnes atteintes du syndrome de Diogène ont eu lieu à Paris, selon le responsable du Service technique de l'habitat (STH) à Paris \cite{ref21}
+\subsubsection*{Quels remèdes pour les personnes atteintes de ces troubles ?}
+Selon \cite{ref27}, "Le syndrome de Diogène sera pris en charge en institution ou à domicile par une équipe multi-disciplinaire psychiatrique ou psycho-gériatrique".\\
+Par contre la syllogomanie, peut être traitée grâce à trois piliers :
+\begin{itemize}
+\item la prise de conscience,
+\item la psychothérapie,
+\item et les traitements médicamenteux
+\end{itemize}
+
+\subsubsection*{Peut-on tenter de remédier à ces troubles grâce au Smart Waste Management ?}
+En ce qui concerne la syllogomanie, on peut penser qu'il est peut être possible de mettre ne place un assistant personnel en forme d'un boîtier intelligent comme le boîtier Eugène, mais qui permettrait à chaque scan d'un produit d'indiquer le caractère inutile de ne pas jeter ce déchet, on peut par exemple indiquer les conséquences de le garder chez soi (odeur par exemple).\\
+Il faudra miser sur le premier pilier qui est la prise de conscience, grâce à l'information, des vidéos, une modélisation du processus à suivre pour le jeter, ainsi que les résultats que ça rapportera. Ceci peut être utile aussi pour le syndrome de Diogène.\\
+Le boîtier intelligent peut aussi nous permettre de dialoguer avec notre psychologue ou psychothérapeute. Comme il doit nous permettre grâce à des vidéos ou contenus en psychothérapie de regagner la confiance en soi, et d'adopter de nouvelles habitudes.\\
+Une évolution de cette solution à destination des personnes atteintes du syndrome de Diogène peut se présenter en forme d'un robot doté d'intelligence artificielle, qui permettra grâce à son système de déchargement automatique, ainsi que sa cartographie interne, de s'occuper même de jeter les déchets.\\
+L'intégration d'une caméra pourra permettre de reconnaître les objets qui n'ont pas bougé depuis un certain temps, et donc de lancer une alerte.\\
+Bien sûr dans le domaine médical, si on s'engage pour mettre en place ces solutions, il faudra travailler en collaboration avec des experts en santé, et suivre leurs spécifications exactes.
+
+\subsection{Désinfection des conteneurs à déchets}
+L'intégration d'un capteur de niveau d'humidité et de pollution dans un conteneur de déchets, permettra de définir les conteneurs qui doivent être désinfectés.\\
+La désinfection peut se faire de manière automatique si on disposait de vaporisateurs sur la paroi interne du conteneur, connectés au système de désinfection.\\
+La gestion des paramètres de désinfection permettra de vaporiser le produits à des fréquences étudiées.
+
+\chapter*{Conclusion}
+Le Smart Waste Management est un sujet récent et très intéressant, qui en plus procure beaucoup de bien à l'environnement.\\
+L'implémentation de ses solutions est simple, et requiert une technologie de capteurs et de traitement de données, ou l'intégration de systèmes embarqués.\\
+Le Smart Waste Management est très riche en fonctionnalités, que la recherche peut encore développer, il sera notamment important de développer la durabilité de ses solutions qui sont à base de capteurs, de technologies IOT et de systèmes embarqués ou même de drones, qui ne sont pas biodégradables, ainsi les solutions mises en place sont aussi une source de déchets pour l'environnement.\\ 
+Pour terminer, nous reprenons une phrase citée dans \cite{ref12} qui dit : "l’intelligence apportée aux objets va provoquer la même rupture technologique et sociétale que l’électricité ou Internet", car d'ici quelques années, cette intelligence apportée à la gestion des déchets deviendra habituelle et nécessaire.
+
+
+
+
+\tableofcontents
+
+\listoffigures
+
+\bibliographystyle{unsrt} % Le style est mis entre accolades.
+\bibliography{Bibl}
+
+\end {document}
